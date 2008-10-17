@@ -10,4 +10,5 @@ handlers:
 
 - url: /.*
   script: followtwits.py
+  secure: always  
   
