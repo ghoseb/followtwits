@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Follow my Twitter Followers</title>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<meta name="Description" content="" />
+
+<!-- start IE specific metas -->
+<meta content="off" name="autosize" />
+<meta http-equiv="imagetoolbar" content="no" />
+<meta name="MSSmartTagsPreventParsing" content="true" />
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+<script type="text/javascript" src="/static/thickbox-compressed.js"></script>
+<link rel="stylesheet" href="/static/thickbox.css" type="text/css" media="screen" />
+<style rel="stylesheet" type="text/css">
+<!--
+
+html, body {
+margin: 2em;
+text-align: center;
+font: normal normal normal 1em/normal "Lucida Grande", Lucida, "Helvetica Neue", Helvetica, Verdana, sans-serif;
+}
+
+h1 { font-size: x-large; }
+p { font-size: small; }
+
+div.wrapper {
+width: 69%;
+min-width: 600px;
+margin: .3em auto;
+padding: 0 2em;
+text-align: left;
+border: 1px solid #ccc;
+background: #eee;
+}
+
+div.note {
+border: 1px solid #999;
+background: #ff9;
+color: #333;
+}
+
+div#footer p {
+font-size: x-small;
+}
+
+div.hide_this {
+float: right;
+margin: 0 -20px 0 0;
+padding: 5px 0 0 0;
+font-size: x-small;
+}
+
+form label {
+color: #666;
+font-size: small;
+text-transform: uppercase;
+}
+
+form .f_butt {
+float: left;
+width: 200px;
+height: 26px;
+background: #fff;
+border-style: solid;
+border-width: 1px;
+border-top-color: #999;
+border-left-color: #999;
+border-right-color: #ccc;
+border-bottom-color: #ccc;
+font-weight: bold;
+text-transform: uppercase;
+cursor: pointer;
+}
+
+form .f_butt:hover {
+border: 1px solid #999;
+background: #eee;
+}
+
+.loading {
+float: left;
+position: relative;
+padding: 0;
+margin-left: 10px;
+border: 0 none;
+}
+
+.loading img {}
+
+hr {
+color: #fff;
+background: transparent;
+border: 0;
+border-bottom: 1px #ccc solid;
+margin: 0 0 .5em;
+padding: 0 0 .5em;
+}
+
+.clear {
+clear: both;
+}
+
+span#spinner {
+display: none;
+}
+
+-->
+</style>
+</head>
+<body>
+
+{% if success %}
+<div class="wrapper note">
+	<div id="hide_note" class="hide_this"><a id="hide_link" href="javascript: void(0);" title="Hide This">Hide</a></div>
+	<h1>Success!</h1>
+	<p>You've successfully followed your followers.</p>
+</div>
+{% endif %}
+
+{% if error %}
+<div class="wrapper note">
+	<div id="hide_note" class="hide_this"><a id="hide_link" href="javascript: void(0);" title="Hide This">Hide</a></div>
+	<h1>EPIC FAIL!</h1>
+	<p>We have hit the <a href="http://appengine.google.com/">GAE</a> limit. I CAN HAZ RETRAI? It will work now, promise.</p>
+</div>
+{% endif %}
+
+<div class="wrapper">
+	<h1>Follow my Twitter Followers</h1>
+	<p>That oft-discussed <a href="http://twitter.com/">Twitter</a>-thingy that helps you to follow all your followers</p>
+
+	<hr />
+	
+	<form action="/" method="post">
+		<p>
+		<label for="username">Twitter Username</label><br />
+		<input type="text" name="username" id="username" size="50" tabindex="1" />
+		</p>
+
+		<p>
+		<label for="password">Password</label><br />
+		<input type="password" name="password" id="password" size="50" tabindex="2" />
+		</p>
+		
+		<input class="f_butt" name="submit" type="submit" id="submit" value="Follow &rsquo;em" tabindex="3" />
+		<span id="spinner" class="loading"><img src="/static/loading.gif" alt="Loading" /></span>
+		
+	</form>
+	
+	<hr class="clear" />
+
+	<p>
+		<em>Disclaimer:</em>
+		<ul>
+			<li>We <strong>DO NOT</strong> have any relationship with Twitter</li>
+			<li>We <strong>DO NOT</strong> store your username/password</li>
+            <li>We <strong>DO NOT</strong> take responsibility of outages at Twitter or restrictions of <a href="http://appengine.google.com/">GAE</a></li>
+		</ul>
+	</p>
+</div>
+
+<div id="footer" class="wrapper">
+	<p>From the cool folks at <a href="http://ocricket.com/" title="oCricket">oCricket.com</a>. Follow <a href="http://twitter.com/ocricket/" title="oCricket on Twitter">@ocricket</a>.
+    <a class="thickbox" title="Followtwits Feedback Form" href="http://spreadsheets.google.com/embeddedform?key=pe-bHibuWoICLgdIK2_zkNw&TB_iframe=true&width=350&height=420&frameborder=0&marginheight=0&marginwidth=0&padding=10&margin=10">Leave Feedback</a></p>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    $("input#username").focus();
+    $("a#hide_link").click(function(evt) {
+      $("div.note").slideUp("fast");
+      evt.stopPropagation();
+    });
+    $("input#submit").click(function() {
+      $("span#spinner").show();
+    });
+  });
+</script>
+
+</body>
+</html>
