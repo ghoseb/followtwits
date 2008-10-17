@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 ## followtwits.py -- Follow Twitter Pals -*- Python -*-
-## Time-stamp: "2008-10-17 15:37:14 ghoseb"
+## Time-stamp: "2008-10-17 16:39:51 ghoseb"
 
 ## Copyright (c) 2008, oCricket.com
 
@@ -40,8 +40,7 @@ class MainPage(webapp.RequestHandler):
             friends = set([f['screen_name'] for f in t.get_friends()])
             followers = set([f['screen_name'] for f in t.get_followers()])
             to_follow = followers.difference(friends)
-            success_list = []
-
+            
             try:
                 for user in to_follow:
                     try:
@@ -58,7 +57,7 @@ class MainPage(webapp.RequestHandler):
                 raise
         
         except Exception:
-            self.response.out.write(template.render(path, {"error": True}))            
+            self.response.out.write(template.render(path, {"error": True}))
 
     
 application = webapp.WSGIApplication([('/', MainPage)], debug=True)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 ## twitter.py -- Wrappers over Twitter API -*- Python -*-
-## Time-stamp: "2008-10-16 17:01:18 ghoseb"
+## Time-stamp: "2008-10-17 16:33:03 ghoseb"
 
 ## Copyright (c) 2008, oCricket.com
 
@@ -33,7 +33,7 @@ class Twitter(object):
 
     def parse_json(self, data):
         """Convert JSON data to an object
-        
+
         Arguments:
         - `data`: JSON data
         """
@@ -44,12 +44,25 @@ class Twitter(object):
     def get_friends(self):
         """Get all friends on Twitter
         """
-        url = "http://twitter.com/statuses/friends.json"
+        # url = "http://twitter.com/statuses/friends.json"
         headers = self.get_auth_header()
-        result = urlfetch.fetch(url, headers=headers)
-        if result.status_code == 200:
-            return self.parse_json(result.content)
+        return self._get_friends(headers)
         
+    def _get_friends(self, headers, data=[], page=1):
+        """Get friends from a given page
+        
+        Arguments:
+        - `headers`: The auth header
+        - `data`: Intermediate data
+        - `page`: The page number
+        """
+        url = "http://twitter.com/statuses/friends.json?page=" + str(page)
+        result = urlfetch.fetch(url, headers=headers)
+        newdata = self.parse_json(result.content)
+        if (newdata and result.status_code == 200):
+            return self._get_friends(headers, (data + newdata), page+1)
+        return data
+    
     def get_followers(self):
         """Get all followers on Twitter
         """
