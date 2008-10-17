@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 ## followtwits.py -- Follow Twitter Pals -*- Python -*-
-## Time-stamp: "2008-10-16 20:49:15 ghoseb"
+## Time-stamp: "2008-10-17 15:37:14 ghoseb"
 
 ## Copyright (c) 2008, oCricket.com
 
@@ -49,7 +49,7 @@ class MainPage(webapp.RequestHandler):
                         logging.info("%s now follows %s" % (username, user))                    
                     except DownloadError:
                         logging.warning("Download error when %s tried to follow %s" % (username, user))
-                        continue
+                        raise
 
                 self.response.out.write(template.render(path, {"success": True}))
 
