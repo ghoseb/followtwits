@@ -134,7 +134,7 @@ display: none;
 
 	<hr />
 	
-	<form action="/" method="post">
+	<form id="f_form" action="/" method="post">
 		<p>
 		<label for="username">Twitter Username</label><br />
 		<input type="text" name="username" id="username" size="50" tabindex="1" />
@@ -174,8 +174,20 @@ display: none;
       $("div.note").slideUp("fast");
       evt.stopPropagation();
     });
+    function validateForm() {
+      if ($("input#username").val() && $("input#password").val()) {
+        return true;
+      } else {
+        return false;
+      }
+    }
     $("input#submit").click(function() {
-      $("span#spinner").show();
+      if (validateForm()) {
+        $("span#spinner").show();
+        return true;
+      } else {
+        return false;
+      }
     });
   });
 </script>
