@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 ## followtwits.py -- Follow Twitter Pals -*- Python -*-
-## Time-stamp: "2008-10-17 16:39:51 ghoseb"
+## Time-stamp: "2009-01-07 20:40:36 ghoseb"
 
 ## Copyright (c) 2008, oCricket.com
 
@@ -10,6 +10,7 @@ from cgi import escape
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
+from google.appengine.runtime import DeadlineExceededError
 
 from twitter import Twitter
 
@@ -35,17 +36,17 @@ class MainPage(webapp.RequestHandler):
         try:
             username = escape(self.request.get('username'))
             password = escape(self.request.get('password'))
-            logging.info("Handling request for %s" % username)        
+            logging.info("Handling request for %s" % username)
             t = Twitter(username, password)
             friends = set([f['screen_name'] for f in t.get_friends()])
             followers = set([f['screen_name'] for f in t.get_followers()])
             to_follow = followers.difference(friends)
-            
+
             try:
                 for user in to_follow:
                     try:
                         t.friendship_create(user, True)
-                        logging.info("%s now follows %s" % (username, user))                    
+                        logging.info("%s now follows %s" % (username, user))
                     except DownloadError:
                         logging.warning("Download error when %s tried to follow %s" % (username, user))
                         raise
@@ -53,18 +54,18 @@ class MainPage(webapp.RequestHandler):
                 self.response.out.write(template.render(path, {"success": True}))
 
             except Exception, e:
-                logging.warning("Caught an exception when %s tried to follow %s: %s" % (username, user, e))
+                logging.warning("Caught an exception %s when %s tried to follow %s: %s" % (e, username, user))
                 raise
-        
-        except Exception:
+
+        except DeadlineExceededError:
             self.response.out.write(template.render(path, {"error": True}))
 
-    
-application = webapp.WSGIApplication([('/', MainPage)], debug=True)
+
+application = webapp.WSGIApplication([('/', MainPage)], debug=False)
 
 def main():
     run_wsgi_app(application)
 
 if __name__ == "__main__":
     main()
-    
+
